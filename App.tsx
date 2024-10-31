@@ -1,118 +1,80 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, { useState } from 'react'
+import { FlatList, Pressable, SafeAreaView, StyleSheet, Text } from 'react-native';
+import FomularioET from './src/componente/estudiante';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
-
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+const App = () => {
+  const[modalVisible, SetModalVisible] = useState(false);
+  const [carnet, setCarnet] = useState<{id: string}[]>([]);
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+    <SafeAreaView style= {styles.container}>
+      <Text style={styles.titulo1}>
+        {''} Administracion
+        </Text>
+        <Text style={styles.titulo2}>Estudiantes</Text>
+
+      <Pressable style = {styles.btnNewEstudiantes} 
+      onPress={() => SetModalVisible(!modalVisible)}>
+        <Text style = {styles.btnTxtNewEstudiantes}>Nuevo Estudiantes</Text>
+      </Pressable>
+      {carnet.length == 0?
+     <Text style={styles.NoEstudiantes}> Noo hay Estudiantes</Text>:
+     <FlatList
+     data={carnet}
+     keyExtractor={(item) => item.id}
+     renderItem={(item)=>{
+      return(
+        <Text style={styles.NoEstudiantes}> sii hay pacientes</Text>
+      )
+     }}
+     />
+     
+    }
+    <FomularioET 
+      modalVisible={modalVisible}
+      SetModalVisible={SetModalVisible}
+      carnet = {carnet}
+      setCarnet = {setCarnet}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
     </SafeAreaView>
   );
-}
-
+};
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    backgroundColor: '#33beff',
+    flex: 1, 
   },
-  sectionTitle: {
+  titulo1: {
+    textAlign: 'center',
+    fontSize: 40,
+    color: '#090a0a',
+    fontWeight: '600',
+  },
+  titulo2:{
+    textAlign: 'left',
+    fontSize: 25,
+    fontWeight: '900',
+    color: '#090a0a'
+  },
+  btnNewEstudiantes:{
+    backgroundColor: '#4234ca',
+    padding: 20,
+    marginTop: 30,
+    marginHorizontal: 20,
+    borderRadius: 10,
+  },
+  btnTxtNewEstudiantes:{
+    textAlign: 'center',
+    color: '#090a0a',
+    fontSize: 19,
+    fontWeight: '900',
+    textTransform: 'uppercase'
+  },
+  NoEstudiantes:{
+    marginTop: 40,
+    textAlign: 'center',
     fontSize: 24,
     fontWeight: '600',
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
 });
-
 export default App;
