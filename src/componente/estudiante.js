@@ -9,31 +9,35 @@ import { Alert,
     TextInput, 
     View } from 'react-native';
 import DatePicker from 'react-native-date-picker';
+import Estudiantes from './Estudiantes';
 
-const estudiante = ({modalVisible, SetModalVisible, carnet, setCarnet}) => {
-
+const estudiante = ({modalVisible, SetModalVisible, carnet,setCarnet}) => {
+    const [escarnet, setEsCarnet] = useState('');
     const [esnombre, setEsNombre] = useState('');
     const [esapellido, setEsApellido] = useState('');
     const [esdireccion, setEsDireccion] = useState('');
     const [esfecha, setEsFecha] = useState(new Date());
 
     const handleAgregar = () => {
-        if([carnet, esnombre, esapellido, esdireccion, esfecha].includes(''))
+        if([ escarnet, esnombre, esapellido, esdireccion, esfecha].includes(''))
             {
                 Alert.alert('Error', 'Todos los campos son obligatorios');
                 return;
             }
+
         const nuevoestudiante = {
-            carnet,
+            id: Date.now(),
+            escarnet,
             esnombre,
             esapellido,
             esdireccion, 
             esfecha,
         }
         console.log(nuevoestudiante);
+        
         setCarnet([...carnet, nuevoestudiante]);
         SetModalVisible(!modalVisible);
-        setCarnet('');
+        setEsCarnet('');;
         setEsNombre('');
         setEsApellido('');
         setEsDireccion('');
@@ -55,8 +59,8 @@ const estudiante = ({modalVisible, SetModalVisible, carnet, setCarnet}) => {
                         style={style.input}
                         placeholder="No. de Carnet"
                         placeholderTextColor={'#666'}
-                        value={carnet}
-                        onChangeText={setCarnet}
+                        value={escarnet}
+                        onChangeText={setEsCarnet}
                     />
                 </View>
                 <View style={style.campo}>
@@ -96,7 +100,7 @@ const estudiante = ({modalVisible, SetModalVisible, carnet, setCarnet}) => {
                         date={esfecha}
                         locale="es"
                         onDateChange={date => setEsFecha(date)}
-                        />
+                    />
                     </View>
                 </View>
                 <Pressable style={style.btnAgregarET}
